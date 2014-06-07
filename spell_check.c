@@ -29,6 +29,7 @@ node* table[26];
 int hash (char* string);
 void print_all (void);
 void print_i (int i); 
+void check(char* w);
 
 // main 
 int main (void)
@@ -81,13 +82,14 @@ int main (void)
         printf("\nPlease enter a valid option\n"); 
         printf("\n 1 - Quit\n"); 
         printf("\n 2 - Print a letter of the dictionary\n");
-        printf("\n 3 - Print the full dictionary\n\n");
+        printf("\n 3 - Print the full dictionary\n");
+        printf("\n 4 - Check to see if a specific word is in the dictionary\n\n");
         int option = GetInt();
 
         switch (option)
         {
             // quit
-            case 1: printf("Goodbye!\n\n"); return 0;
+            case 1: printf("\nGoodbye!\n\n"); return 0;
             
             // print an individual section ("Letter") of the dictionary
             case 2: printf("\nWhich letter of the dictionary would you like to print?\n\n"); // prompt user
@@ -99,6 +101,10 @@ int main (void)
 
             // print dictionary
             case 3: print_all(); break;
+            
+            case 4: printf("\nWhich word would you like to check?\n\n"); // prompt user
+                    char* w = GetString(); // get string from user
+                    check(w); free(w); break; // check word and free memory   
 
             default: printf("Not a valid option.\n"); break;
         }   
@@ -169,6 +175,33 @@ void print_i (int i)
     free(current); // free temporary node       
 }
 
+void check(char* w)
+{
+    // allocate memory for a string that will contain the unadulterated word
+    char* original = malloc((strlen(w) + 1) * sizeof(char));
+    if (original == NULL) {free(w);} // check for NULL
+    
+    // convert word to lowercase to compare it to the all lower-care dictionary
+    for (int i = 0, n = strlen(w); i < n; i++) {original[i] = w[i]; w[i] = tolower(w[i]);}
+    
+    int h = hash(w); // hash word to determine hash table access key
+    
+    node* current = table[h]; // set temporary node to head of list
+    
+    while (current->word != NULL && w != NULL) // NULL check and loop until end of list
+    { 
+        // Scenario 1:  Word matches current word in list   
+        if (strcmp(w,current->word) == 0) {printf("\n%s is in the Dictionary!\n\n", original); break;}
+        /* Scenario 2: Word does not match current word.
+           Apocryphal Buddhist and/or Confucian proverb:
+           "To advace further, look within" */
+        else {current = current->next;}
+    }
+    // Inform user that word was not in the dictionary            
+    if (current->word == NULL) {printf("\n%s was not in the Dictionary.\n\n", original);}
+    free(current); // free temporary node
+    free(original); // free string containing the originally requested word
+}
 
   
 /* basic hash function - takes the first letter of each string and returns a 
