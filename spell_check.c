@@ -25,8 +25,9 @@ typedef struct node {char word[50]; struct node* next;} node;
 
 // initialize table array
 node* table[26];
-// declare hash function
+// declare hash and print all functions
 int hash (char* string);
+void print_all (void); 
 
 // main 
 int main (void)
@@ -46,9 +47,6 @@ int main (void)
         
         // create a string (char*) to be hashed 
         char* v = new_node->word;
-
-        // print check statement - to be removed TODO
-        printf("%s.\n", v);
 
         // retrieve hash key by hashing the current word
         int k = hash (v);
@@ -74,20 +72,61 @@ int main (void)
     }
     printf(".\n\n\n");
 
-    // "For" loop to print out each array spot
-    for (int i = 25; i >= 0; i--) 
+    // prompt the user to print dictionary
+    
+    // switch case
+    while (true)
     {
-        // temp node that equals the beginning of the "i"th spot in the table                             
-        node* current = table[i];
+        printf("\nWould you like to print the dictionary?\n"); 
+        printf("\n 1 - Yes \n 2 - No\n"); int option = GetInt();
 
-        // "While" loop until "word" equals NULL
-        while (current->word != NULL) 
+        switch (option)
         {
-            printf("%s.\n", current->word); // print word 
-            current = current->next; // update pointer 
-        }         
+            // quit
+            case 1: print_all(); return 0;
+
+            // print dictionary
+            case 2: printf("Goodbye!\n"); return 0;
+
+            default: printf("Not a valid option.\n"); break;
+        }   
+    }  
+} 
+
+/**
+ *
+ * print the entire Dictionary, along with headers and word
+ * counts for each letter, and a total word count
+ *
+ */
+ 
+void print_all (void) 
+{
+    int word_counter = 0; // initialize total word counter
+    
+    printf("\nDictionary - Complete:\n\n"); // print header
+    
+    for (int i = 0; i <= 25; i++) // for loop to access hash table
+    {
+        int letter = i + 65; // determine current ASCII letter value
+        int letter_counter = 0; // initialize current letter counter
+        printf("Dictionary - Letter: %c\n\n", (char) letter); // print header
+        node* current = table[i]; // set temporary node to the head of list
+        while (current->word != NULL) // while loop until end of list
+        {
+            printf("%s.\n", current->word); // print word
+            current = current->next; // move to next word
+            word_counter++; letter_counter++; // update counters
+        }
+        // print word counter for each letter
+        printf("\nTotal Letter %c word count: %i.\n\n", (char) letter, letter_counter);
+        free(current);  // free temporary node
     }
+    // print total word count for dictionary
+    printf("Total Dictionary Word Count: %i.\n\n", word_counter);
 }
+
+
   
 /* basic hash function - takes the first letter of each string and returns a 
    numerical value (a = 0, b = 1, c = 2, etc.) */      
