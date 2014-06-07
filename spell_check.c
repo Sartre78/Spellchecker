@@ -78,20 +78,22 @@ int main (void)
     // switch case
     while (true)
     {
-        printf("\nPlease enter a valid option?\n"); 
+        printf("\nPlease enter a valid option\n"); 
         printf("\n 1 - Quit\n"); 
         printf("\n 2 - Print a letter of the dictionary\n");
-        printf("\n 3 - Print the full dictionary\n");
+        printf("\n 3 - Print the full dictionary\n\n");
         int option = GetInt();
 
         switch (option)
         {
             // quit
-            case 1: printf("Goodbye!\n"); return 0;
+            case 1: printf("Goodbye!\n\n"); return 0;
             
             // print an individual section ("Letter") of the dictionary
             case 2: printf("\nWhich letter of the dictionary would you like to print?\n\n"); // prompt user
                     char* c = GetString(); // get string from user
+                    int alpha = c[0];
+                    if (isalpha(alpha) == 0) {printf("\nNot a letter!\n"); break;}
                     int h = hash(c); // determine hash key
                     print_i(h); free(c); break; // print table for letter & free memory
 
