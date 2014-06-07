@@ -25,9 +25,10 @@ typedef struct node {char word[50]; struct node* next;} node;
 
 // initialize table array
 node* table[26];
-// declare hash and print all functions
+// function declarations
 int hash (char* string);
-void print_all (void); 
+void print_all (void);
+void print_i (int i); 
 
 // main 
 int main (void)
@@ -77,16 +78,25 @@ int main (void)
     // switch case
     while (true)
     {
-        printf("\nWould you like to print the dictionary?\n"); 
-        printf("\n 1 - Yes \n 2 - No\n"); int option = GetInt();
+        printf("\nPlease enter a valid option?\n"); 
+        printf("\n 1 - Quit\n"); 
+        printf("\n 2 - Print a letter of the dictionary\n");
+        printf("\n 3 - Print the full dictionary\n");
+        int option = GetInt();
 
         switch (option)
         {
             // quit
-            case 1: print_all(); return 0;
+            case 1: printf("Goodbye!\n"); return 0;
+            
+            // print an individual section ("Letter") of the dictionary
+            case 2: printf("\nWhich letter of the dictionary would you like to print?\n\n"); // prompt user
+                    char* c = GetString(); // get string from user
+                    int h = hash(c); // determine hash key
+                    print_i(h); free(c); break; // print table for letter & free memory
 
             // print dictionary
-            case 2: printf("Goodbye!\n"); return 0;
+            case 3: print_all(); break;
 
             default: printf("Not a valid option.\n"); break;
         }   
@@ -124,6 +134,37 @@ void print_all (void)
     }
     // print total word count for dictionary
     printf("Total Dictionary Word Count: %i.\n\n", word_counter);
+}
+
+/**
+ *
+ * prints all the words of a given letter of the dictionary.
+ * also prints out the total number of words for the given letter.
+ *
+ */
+ 
+void print_i (int i)
+{
+    // check to see if the dictionary has been loaded and respond accordingly
+    if (table[i] == NULL) {printf("Dictionary has not been loaded yet!\n\n");}
+    
+    int word_counter = 0; // initialize word counter
+    
+    node* current = table[i]; // set temporary node to head of the list
+    
+    int letter = i + 65; // obtain ASCII letter (Capitial)
+    
+    printf("\nDictionary - Letter: %c\n\n", (char) letter); // print header
+    
+    while (current->word != NULL) // while loop until end of list
+    {
+        printf("%s.\n", current->word); // print current word
+        current = current->next; // move to next word
+        word_counter++; // increase counter
+    }
+    // print final word count 
+    printf("\nTotal Letter %c word count: %i.\n\n", (char) letter, word_counter);
+    free(current); // free temporary node       
 }
 
 
