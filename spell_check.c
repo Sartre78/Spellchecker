@@ -71,7 +71,8 @@ int main (void)
                "head") to be the node containing the desired string to be 
                inserted.  */ 
             table[k] = new_node;
-        }             
+            free(curr);
+        }        
     }
     printf(".\n\n\n");
 
@@ -105,6 +106,8 @@ int main (void)
             
             case 4: printf("\nWhich word would you like to check?\n\n"); // prompt user
                     char* w = GetString(); // get string from user
+                    // check the first character of the word to avoid seg fault                   
+                    if (isalpha(w[0]) == 0) {printf("\nThat's not a word!\n"); free(w); break;}
                     check(w); free(w); break; // check word and free memory   
 
             default: printf("Not a valid option.\n"); break;
