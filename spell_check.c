@@ -71,7 +71,6 @@ int main (void)
                "head") to be the node containing the desired string to be 
                inserted.  */ 
             table[k] = new_node;
-            free(curr);
         }        
     }
     printf(".\n\n\n");
