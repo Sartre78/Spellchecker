@@ -30,6 +30,7 @@ int hash (char* string);
 void print_all (void);
 void print_i (int i); 
 void check(char* w);
+void free_table (void);
 
 // main 
 int main (void)
@@ -70,7 +71,7 @@ int main (void)
                "head") to be the node containing the desired string to be 
                inserted.  */ 
             table[k] = new_node;
-        }                 
+        }             
     }
     printf(".\n\n\n");
 
@@ -89,7 +90,7 @@ int main (void)
         switch (option)
         {
             // quit
-            case 1: printf("\nGoodbye!\n\n"); return 0;
+            case 1: free_table(); printf("\nGoodbye!\n\n"); fclose(file); return 0;
             
             // print an individual section ("Letter") of the dictionary
             case 2: printf("\nWhich letter of the dictionary would you like to print?\n\n"); // prompt user
@@ -205,6 +206,17 @@ void check(char* w)
 
   
 /* basic hash function - takes the first letter of each string and returns a 
-   numerical value (a = 0, b = 1, c = 2, etc.) */      
+   numerical value (a = 0, b = 1, c = 2, etc.) */   
+/**
+ *
+ *frees table
+ *
+ */
+ 
+void free_table (void)
+{
+    // free every "i"th spot of the table
+    for (int i = 0; i <= 25; i++) {free(table[i]);}
+}      
     
 int hash (char* string) {int h = toupper(string[0]) - 'A'; return h % 26;}
