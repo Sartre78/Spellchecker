@@ -202,7 +202,6 @@ void check(char* w)
     }
     // Inform user that word was not in the dictionary            
     if (current->word == NULL) {printf("\n%s was not in the Dictionary.\n\n", original);}
-    free(current); // free temporary node
     free(original); // free string containing the originally requested word
 }
 
