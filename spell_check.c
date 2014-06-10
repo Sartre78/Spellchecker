@@ -206,8 +206,14 @@ void check(char* w)
 void free_table (void)
 {
     // free every "i"th spot of the table
-    for (int i = 0; i <= 25; i++) {free(table[i]);}
-}      
+    for (int i = 0; i <= 25; i++) 
+    {
+        node* cursor = table[i]; // temp node
+        
+        // free every node in the list
+        while (cursor != NULL) {node* temp = cursor; cursor = cursor->next; free(temp);}
+    }
+}        
 /* basic hash function - takes the first letter of each string and returns a 
    numerical value (a = 0, b = 1, c = 2, etc.) */      
 int hash (char* string) {int h = toupper(string[0]) - 'A'; return h % 26;}

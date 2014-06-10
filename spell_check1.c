@@ -33,6 +33,7 @@ void print_all (void);
 void print_i (int i); 
 void check(char* w);
 void free_table (void);
+int words = 0;
 // main 
 int main (void)
 {
@@ -41,7 +42,7 @@ int main (void)
     if (fp == NULL) {printf("Could not open dictionary.\n"); return false;}
 
    // prepare to spell-check
-    int index = 0, words = 0;
+    int index = 0;
     char word[LENGTH+1];
 
     // spell-check each word in text
@@ -242,7 +243,13 @@ void check(char* w)
 void free_table (void)
 {
     // free every "i"th spot of the table
-    for (int i = 0; i <= 25; i++) {free(table[i]);}
+    for (int i = 0; i <= 25; i++) 
+    {
+        node* cursor = table[i]; // temp node
+        
+        // free every node in the list
+        while (cursor != NULL) {node* temp = cursor; cursor = cursor->next; free(temp);}
+    }
 }      
     
 int hash (char* string) {int h = toupper(string[0]) - 'A'; return h % 26;}
