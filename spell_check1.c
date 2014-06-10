@@ -79,30 +79,25 @@ int main (void)
     
         // scan word from file into the "word" portion of the new node struct
         fscanf(file, "%s", new_node->word);
-        
-        // create a string (char*) to be hashed 
-        char* v = new_node->word;
-
-        // retrieve hash key by hashing the current word
-        int k = hash (v);
 
         // initial insertion scenario (i.e., the spot in the table array is empty)
-        if (table[k] == NULL)  {table[k] = new_node;}
+        // The hash function has been embedded
+        if (table[hash(new_node->word)] == NULL)  {table[hash(new_node->word)] = new_node;}
     
         /* otherwise, put the new string in the first position and link the
            previous node to the new head of the list */
         else 
         {
             // create a node equal to the current value of the table
-            node* curr = table[k];  
+            node* curr = table[hash(new_node->word)];  
             /* point "new_node" (the struct holding the value of the desired
                word to be inserted) to the newly created node that equals what
                to this point was the start of the list */ 
             new_node->next = curr;
-            /* set the head pointer of the "k"th spot in the array (i.e., the 
+            /* set the head pointer of the first spot in the array (i.e., the 
                "head") to be the node containing the desired string to be 
                inserted.  */ 
-            table[k] = new_node;
+            table[hash(new_node->word)] = new_node;
         }        
     }
     printf(".\n\n\n");
@@ -218,10 +213,8 @@ void check(char* w)
     
     // convert word to lowercase to compare it to the all lower-care dictionary
     for (int i = 0, n = strlen(w); i < n; i++) {original[i] = w[i]; w[i] = tolower(w[i]);}
-    
-    int h = hash(w); // hash word to determine hash table access key
-    
-    node* current = table[h]; // set temporary node to head of list
+
+    node* current = table[hash(w)]; // set temporary node to head of list (hash function embedded)
     
     while (current->word != NULL && w != NULL) // NULL check and loop until end of list
     { 
